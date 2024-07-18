@@ -1,0 +1,14 @@
+    //Apex Trigger Class Code
+      Trigger CaseTrigger On Case ( Before Delete ) {
+         if( Trigger.isBefore && Trigger.isDelete ){
+           CaseTriggerHandler.handleBeforeDelete( Trigger.Old );
+      } } 
+      //Apex Handler Class Code
+             public class CaseTriggerHandler {
+                 public static void handleBeforeDelete(List <Case> oldRecords){
+                     Id currentuserprofileId = userinfo.getprofileId( );
+               Id sysadminprofileId = [ SELECT Id, Name From Profile WHERE Name ='System Administrator' LIMIT 1 ].Id ; 
+          for ( Case caseRecord : oldRecords ) {
+     if(sysadminprofileId !=currentuserprofileId ) {
+CaseRecord.addError (' You Dont Have The Rights To Delete !' );
+} } } }
